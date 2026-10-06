@@ -1,0 +1,123 @@
+{
+  "v1_setting_capture_34": {
+    "connections": 23145,
+    "malicious": 21222,
+    "share_malicious": 0.9169151004536616,
+    "flagged": 232,
+    "malicious_caught": 120
+  },
+  "held_out_captures": {
+    "20": {
+      "connections": 3209,
+      "malicious": 16,
+      "prevalence": 0.004985976939856653,
+      "attack_types": {
+        "Torii": 16
+      },
+      "isolation_forest": {
+        "average_precision": 0.29379824761058776,
+        "recall_at_1pct_fpr": 0.1875,
+        "recall_at_5pct_fpr": 1.0
+      },
+      "local_outlier_factor": {
+        "average_precision": 0.10131147877174354,
+        "recall_at_1pct_fpr": 0.0625,
+        "recall_at_5pct_fpr": 0.375
+      },
+      "supervised_baseline": {
+        "average_precision": 0.8356883693648399,
+        "recall_at_1pct_fpr": 0.9375,
+        "recall_at_5pct_fpr": 0.9375
+      }
+    },
+    "21": {
+      "connections": 3286,
+      "malicious": 14,
+      "prevalence": 0.00426049908703591,
+      "attack_types": {
+        "Torii": 14
+      },
+      "isolation_forest": {
+        "average_precision": 0.33780799155410957,
+        "recall_at_1pct_fpr": 0.21428571428571427,
+        "recall_at_5pct_fpr": 1.0
+      },
+      "local_outlier_factor": {
+        "average_precision": 0.0310897344707197,
+        "recall_at_1pct_fpr": 0.21428571428571427,
+        "recall_at_5pct_fpr": 0.21428571428571427
+      },
+      "supervised_baseline": {
+        "average_precision": 0.9448388050872522,
+        "recall_at_1pct_fpr": 1.0,
+        "recall_at_5pct_fpr": 1.0
+      }
+    },
+    "42": {
+      "connections": 4426,
+      "malicious": 6,
+      "prevalence": 0.0013556258472661546,
+      "attack_types": {
+        "": 3,
+        "FileDownload": 3
+      },
+      "isolation_forest": {
+        "average_precision": 0.594047619047619,
+        "recall_at_1pct_fpr": 1.0,
+        "recall_at_5pct_fpr": 1.0
+      },
+      "local_outlier_factor": {
+        "average_precision": 0.0009928485340367458,
+        "recall_at_1pct_fpr": 0.0,
+        "recall_at_5pct_fpr": 0.0
+      },
+      "supervised_baseline": {
+        "average_precision": 0.0011765436510210623,
+        "recall_at_1pct_fpr": 0.0,
+        "recall_at_5pct_fpr": 0.0
+      }
+    },
+    "44": {
+      "connections": 237,
+      "malicious": 26,
+      "prevalence": 0.10970464135021098,
+      "attack_types": {
+        "": 15,
+        "FileDownload": 11
+      },
+      "isolation_forest": {
+        "average_precision": 0.9445287476056706,
+        "recall_at_1pct_fpr": 1.0,
+        "recall_at_5pct_fpr": 1.0
+      },
+      "local_outlier_factor": {
+        "average_precision": 0.9642988332673788,
+        "recall_at_1pct_fpr": 0.9615384615384616,
+        "recall_at_5pct_fpr": 1.0
+      },
+      "supervised_baseline": {
+        "average_precision": 0.9194922631982915,
+        "recall_at_1pct_fpr": 0.5769230769230769,
+        "recall_at_5pct_fpr": 1.0
+      }
+    }
+  },
+  "mean_over_captures": {
+    "isolation_forest": {
+      "average_precision": 0.5425456514544967,
+      "recall_at_1pct_fpr": 0.6004464285714286,
+      "recall_at_5pct_fpr": 1.0
+    },
+    "local_outlier_factor": {
+      "average_precision": 0.27442322376096967,
+      "recall_at_1pct_fpr": 0.30958104395604397,
+      "recall_at_5pct_fpr": 0.3973214285714286
+    },
+    "supervised_baseline": {
+      "average_precision": 0.6752989953253512,
+      "recall_at_1pct_fpr": 0.6286057692307692,
+      "recall_at_5pct_fpr": 0.734375
+    }
+  },
+  "mean_prevalence": 0.030076685806092424
+}
