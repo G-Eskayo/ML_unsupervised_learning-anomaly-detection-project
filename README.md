@@ -18,6 +18,8 @@
 
 ## v2 results
 
+**Read the walkthrough:** [`anomaly_detection_v2.ipynb`](anomaly_detection_v2.ipynb) explains why v1 failed, builds v2 step by step with its plots and outputs, and checks itself against `v2/results.json`.
+
 Each of the four mostly-benign captures is held out in turn; the detectors are fitted on the other three without labels. Regenerate with `python v2/run.py` (full output in [`v2/results.json`](v2/results.json)).
 
 ![Average precision for each held-out capture: Isolation Forest, Local Outlier Factor and a supervised baseline, with the random-guessing level](v2/v2-held-out.png)
@@ -45,6 +47,8 @@ scripts/fetch-data.sh       # downloads the Kaggle archive (755 MB) and unpacks 
 python -m venv .venv && .venv/bin/pip install scikit-learn pandas numpy matplotlib pytest
 .venv/bin/python -m pytest tests -q
 .venv/bin/python v2/run.py   # about 30 seconds; rewrites v2/results.json and the figure
+.venv/bin/pip install nbformat nbconvert ipykernel && .venv/bin/python -m ipykernel install --user --name anomaly-v2
+.venv/bin/python v2/build_notebook.py   # rebuilds the executed notebook
 ```
 
 The plan, including why each choice was made, is in [`docs/v2-plan.md`](docs/v2-plan.md).
@@ -119,9 +123,12 @@ The model is wrong in the way that matters: it catches **16 of 21,222** maliciou
 ```
 ML_unsupervised_learning.ipynb   v1: main notebook (also .html and .pdf)
 Confusion Matrix.jpg             v1: the result shown above
+anomaly_detection_v2.ipynb       v2: the executed walkthrough notebook
 anomaly_features.py              v2: loading, features, hold-out splits, metrics
+anomaly_experiment.py            v2: the experiment (shared by run.py and the notebook)
 tests/test_anomaly_features.py   v2: 6 tests
 v2/run.py                        v2: regenerates the results and the figure
+v2/build_notebook.py             v2: rebuilds the notebook, executed
 v2/results.json, v2/*.png        v2: the results
 scripts/fetch-data.sh            v2: downloads the Kaggle archive
 docs/v2-plan.md                  why v1 failed and what v2 sets out to do
