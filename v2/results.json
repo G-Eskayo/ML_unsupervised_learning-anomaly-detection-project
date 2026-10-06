@@ -119,5 +119,208 @@
       "recall_at_5pct_fpr": 0.734375
     }
   },
-  "mean_prevalence": 0.030076685806092424
+  "mean_prevalence": 0.030076685806092424,
+  "same_data_capture_34": {
+    "connections": 23145,
+    "malicious": 21222,
+    "share_malicious": 0.9169151004536616,
+    "labels": {
+      "Malicious   DDoS": 14394,
+      "Malicious   C&C": 6706,
+      "Benign": 1923,
+      "Malicious   PartOfAHorizontalPortScan": 122
+    },
+    "block_share_malicious": [
+      0.7647440051847051,
+      0.8565564916828688,
+      1.0,
+      1.0,
+      0.9632750054007345
+    ],
+    "isolation_forest_unsupervised": {
+      "auroc": 0.05183321176971101,
+      "average_precision": 0.7949566085605858,
+      "recall_at_1pct_fpr": 9.424182452172274e-05,
+      "recall_at_5pct_fpr": 0.00023560456130430684,
+      "auroc_if_flipped": 0.9481667882302889
+    },
+    "kmeans": {
+      "2": {
+        "adjusted_rand": 0.12398620118339701,
+        "balanced_accuracy": 0.5
+      },
+      "3": {
+        "adjusted_rand": 0.17102402209444953,
+        "balanced_accuracy": 0.5
+      },
+      "4": {
+        "adjusted_rand": 0.24562786726012537,
+        "balanced_accuracy": 0.9711152850976916
+      },
+      "6": {
+        "adjusted_rand": 0.22256597652312451,
+        "balanced_accuracy": 0.9711152850976916
+      },
+      "8": {
+        "adjusted_rand": 0.2224944204041598,
+        "balanced_accuracy": 0.973975399502268
+      }
+    },
+    "kmeans4_composition": {
+      "0": {
+        "Benign": 30,
+        "C&C": 0,
+        "DDoS": 14377,
+        "PartOfAHorizontalPortScan": 0
+      },
+      "1": {
+        "Benign": 13,
+        "C&C": 1641,
+        "DDoS": 1,
+        "PartOfAHorizontalPortScan": 0
+      },
+      "2": {
+        "Benign": 68,
+        "C&C": 5065,
+        "DDoS": 16,
+        "PartOfAHorizontalPortScan": 121
+      },
+      "3": {
+        "Benign": 1812,
+        "C&C": 0,
+        "DDoS": 0,
+        "PartOfAHorizontalPortScan": 1
+      }
+    },
+    "novelty_one_class_svm": {
+      "auroc": 0.9883635115454567,
+      "average_precision": 0.9961890016736483,
+      "recall_at_1pct_fpr": 0.03783809254547168,
+      "recall_at_5pct_fpr": 0.9983978889831308
+    },
+    "novelty_isolation_forest": {
+      "auroc": 0.944715898144926,
+      "average_precision": 0.9881458482148431,
+      "recall_at_1pct_fpr": 0.004994816699651306,
+      "recall_at_5pct_fpr": 0.2955423617001225
+    },
+    "supervised_reference": {
+      "auroc": 0.980282924444864,
+      "average_precision": 0.9949911286075128,
+      "recall_at_1pct_fpr": 0.005607388559042503,
+      "recall_at_5pct_fpr": 0.9936857977570446
+    },
+    "novelty_one_class_svm_by_attack": {
+      "C&C": 0.9889168725114649,
+      "DDoS": 0.9880897750846812,
+      "PartOfAHorizontalPortScan": 0.9902432162860285
+    },
+    "ablation": {
+      "the rolling 10-second connection count (v1's feature)": {
+        "auroc": 0.9851902868876983,
+        "average_precision": 0.9979593285557224,
+        "recall_at_1pct_fpr": 0.2905946659127321,
+        "recall_at_5pct_fpr": 0.9936857977570446
+      },
+      "byte and packet counts": {
+        "auroc": 0.9967678068163156,
+        "average_precision": 0.9997208490025093,
+        "recall_at_1pct_fpr": 0.9913768730562623,
+        "recall_at_5pct_fpr": 0.9936386768447837
+      },
+      "destination port class": {
+        "auroc": 0.986545264279707,
+        "average_precision": 0.9981772739222561,
+        "recall_at_1pct_fpr": 0.7006408444067477,
+        "recall_at_5pct_fpr": 0.9196117236829705
+      },
+      "protocol and connection state": {
+        "auroc": 0.985918504688543,
+        "average_precision": 0.997761700335941,
+        "recall_at_1pct_fpr": 0.17547827725944773,
+        "recall_at_5pct_fpr": 0.9971256243520874
+      }
+    },
+    "best_single_features": [
+      {
+        "feature": "proto_tcp",
+        "auroc": 0.9710917246415613
+      },
+      {
+        "feature": "proto_udp",
+        "auroc": 0.9710917246415612
+      },
+      {
+        "feature": "recent_conns",
+        "auroc": 0.8702133129147614
+      },
+      {
+        "feature": "state_OTH",
+        "auroc": 0.8359721044199415
+      },
+      {
+        "feature": "log_orig_ip_bytes",
+        "auroc": 0.7984656960493857
+      }
+    ],
+    "top_destination_ports": {
+      "Benign": {
+        "123": 1618,
+        "53": 233
+      },
+      "C&C": {
+        "6667": 6706
+      },
+      "DDoS": {
+        "80": 14393,
+        "5376": 1
+      },
+      "PartOfAHorizontalPortScan": {
+        "63798": 121,
+        "256": 1
+      }
+    }
+  },
+  "transfer_from_capture_34": {
+    "20": {
+      "connections": 3209,
+      "malicious": 16,
+      "auroc": 0.991113373003445,
+      "average_precision": 0.573486967915034,
+      "recall_at_1pct_fpr": 0.625,
+      "recall_at_5pct_fpr": 1.0
+    },
+    "21": {
+      "connections": 3286,
+      "malicious": 14,
+      "auroc": 0.9808767027593434,
+      "average_precision": 0.4045735685578579,
+      "recall_at_1pct_fpr": 0.42857142857142855,
+      "recall_at_5pct_fpr": 0.8571428571428571
+    },
+    "42": {
+      "connections": 4426,
+      "malicious": 6,
+      "auroc": 0.553996983408748,
+      "average_precision": 0.001764505496047558,
+      "recall_at_1pct_fpr": 0.0,
+      "recall_at_5pct_fpr": 0.0
+    },
+    "44": {
+      "connections": 237,
+      "malicious": 26,
+      "auroc": 0.9907036091870215,
+      "average_precision": 0.827012432012432,
+      "recall_at_1pct_fpr": 1.0,
+      "recall_at_5pct_fpr": 1.0
+    },
+    "8": {
+      "connections": 10403,
+      "malicious": 8222,
+      "auroc": 0.9990829894543787,
+      "average_precision": 0.9991755050304517,
+      "recall_at_1pct_fpr": 1.0,
+      "recall_at_5pct_fpr": 1.0
+    }
+  }
 }

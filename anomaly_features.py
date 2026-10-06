@@ -77,3 +77,21 @@ def recall_at_fpr(y_true, score, fpr: float) -> float:
     threshold = neg[min(allowed, len(neg) - 1)]
     pos = score[y_true == 1]
     return float((pos > threshold).mean()) if len(pos) else float("nan")
+
+
+def time_blocks(n: int, k: int):
+    """k contiguous, ordered blocks covering rows 0..n-1. Cross-validating on time blocks (not random rows) keeps neighbouring
+    connections of one burst out of both the training and the test side."""
+    return np.array_split(np.arange(n), k)
+
+
+def cluster_majority_balanced_accuracy(y_true, clusters) -> float:
+    """Label each cluster with its majority class, then score that labelling with balanced accuracy.
+    1.0 = every cluster is pure; 0.5 = the clusters tell you nothing beyond the majority class."""
+    y_true, clusters = np.asarray(y_true), np.asarray(clusters)
+    pred = np.zeros_like(y_true)
+    for c in np.unique(clusters):
+        m = clusters == c
+        pred[m] = int(y_true[m].mean() > 0.5)
+    recalls = [(pred[y_true == cls] == cls).mean() for cls in np.unique(y_true)]
+    return float(np.mean(recalls))

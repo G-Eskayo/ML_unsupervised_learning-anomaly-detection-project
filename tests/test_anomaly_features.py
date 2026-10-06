@@ -63,3 +63,16 @@ def test_recall_at_fpr_picks_the_threshold_that_allows_that_false_alarm_rate():
     score = np.concatenate([np.linspace(0, 0.5, 98), [0.9, 0.3]])
     assert af.recall_at_fpr(y, score, fpr=0.01) == pytest.approx(0.5)   # threshold above all but the top benign: only the 0.9 positive
     assert af.recall_at_fpr(y, score, fpr=0.5) == pytest.approx(1.0)
+
+
+def test_time_blocks_are_contiguous_cover_every_row_once_and_keep_time_order():
+    blocks = af.time_blocks(23, 5)
+    flat = np.concatenate(blocks)
+    assert len(blocks) == 5 and sorted(flat.tolist()) == list(range(23))
+    assert all(b[-1] + 1 == nxt[0] for b, nxt in zip(blocks, blocks[1:]))   # block k ends where block k+1 starts
+
+
+def test_cluster_majority_score_is_perfect_for_pure_clusters_and_chance_for_mixed_ones():
+    y = np.array([0, 0, 1, 1, 1, 1])
+    assert af.cluster_majority_balanced_accuracy(y, np.array([0, 0, 1, 1, 1, 1])) == pytest.approx(1.0)
+    assert af.cluster_majority_balanced_accuracy(y, np.array([0, 0, 0, 0, 0, 0])) == pytest.approx(0.5)

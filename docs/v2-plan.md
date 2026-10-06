@@ -1,48 +1,50 @@
 # Anomaly detection v2: plan
 
-## What v1 was
+## v1's question
 
-A course assignment on one capture of the CTU-IoT-Malware dataset (capture 34-1: 23,145 connections). An `IsolationForest` with `contamination=0.01`, scored against the labels with a confusion matrix: it found 16 of 21,222 malicious connections (recall 0.00, accuracy 0.07). Preserved as the git tag `v1-coursework`.
+From v1's task definition and reflection: *can malicious connections in an IoT connection log be identified, using machine
+learning without relying on labels, from features engineered out of the raw columns?* v1's answer was "not very accurate":
+Isolation Forest (told that 1% of traffic is anomalous) caught 16 of 21,222 malicious connections on capture 34. Preserved as the
+git tag `v1-coursework`.
 
-## What was wrong
+## Correction to my first v2
 
-**The data does not fit the method.** Isolation Forest assumes anomalies are rare. Capture 34 is **92% malicious**, so "flag the rarest 1%" selects the wrong rows by construction. The same dataset contains captures that *are* the textbook setting:
+The first version of v2 moved to *different* captures where the method happened to work, and called that the answer. That
+changed the question. v2 now answers v1's question on v1's own data first, and only then asks whether it generalises.
 
-| Capture | Connections | Malicious |
-|---|---|---|
-| 20-1 | 3,209 | 16 (0.5%) |
-| 21-1 | 3,286 | 14 (0.4%) |
-| 42-1 | 4,426 | 6 (0.1%) |
-| 44-1 | 237 | 26 (11%) |
-| 8-1 | 10,403 | 8,222 (79%) |
-| 3-1 | 156,103 | 151,567 (97%) |
-| 34-1 (v1) | 23,145 | 21,222 (92%) |
+## Hypothesis (stated before the final numbers)
 
-Other problems: the whole file was used for fitting and for scoring (no held-out data); one threshold, no precision/recall trade-off curve; no comparison with a simple supervised baseline; accuracy reported on a 92/8 imbalance.
+**H1.** Malicious connections in capture 34 can be separated from benign ones without using labels, using features engineered from
+the raw columns, and the engineered features (v1 built rolling per-source counts) are what make that possible.
 
-## v2 goals
+What would count against it: detectors no better than a coin flip; or the answer not depending on the engineered features.
 
-1. State the problem correctly: anomaly detection on traffic that is mostly benign (captures 20, 21, 42, 44), and say plainly why capture 34 is a different problem.
-2. Train on benign-looking traffic and **hold out whole captures**: fit on some captures, evaluate on a capture the detector never saw.
-3. Judge with the right metrics: precision-recall curve and average precision, recall at a fixed false-alarm rate. Not accuracy.
-4. Compare Isolation Forest against at least one other unsupervised detector and a supervised baseline (to show what labels buy).
-5. Error analysis: which malicious connections are caught, which are missed, and what they look like (scan, C&C, DDoS).
+## Part A: v1's question on v1's data (capture 34, 23,145 connections, 92% malicious)
+
+1. **Reproduce v1** and read its result both ways. In a capture that is mostly malicious, the *rare* class is the benign one, so
+   what does "anomalous" actually select?
+2. **Different methods**, all scored on the same footing:
+   - clustering (k-means, 2 to 8 clusters), each cluster labelled afterwards by its majority class;
+   - **novelty detection**: learn "normal" from benign connections only (Isolation Forest, one-class SVM), score the rest;
+   - a supervised model as a reference ceiling (what the features can support at all).
+3. **Honest scoring**: cross-validate on contiguous time blocks (not random rows, because connections come in bursts); report
+   AUROC and average precision (accuracy is meaningless at 92/8) and recall at a false-alarm budget.
+4. **Test the second half of H1**: drop each feature group (the rolling count, byte and packet counts, port class, protocol and
+   state) and see whether the answer changes; list the best single feature; look at what each class actually connects to.
+5. **Look at the structure** v1 noticed ("a cluster of anomalies that lies on a line"): project the features and colour by attack.
+
+## Part B: does it travel?
+
+- Train on capture 34 only, score every other capture.
+- Hold each mostly-benign capture (20, 21, 42, 44; 0.1% to 11% malicious) out in turn: unsupervised detectors fitted on the others
+  versus a supervised baseline. (This is the setting anomaly detection assumes, so it also answers "what if the data fit the method".)
 
 ## Non-goals
 
-No deep models, no live traffic, no claim about real-world networks beyond these captures. The malicious count in the mostly-benign captures is tiny (6 to 26), so every number will carry a wide uncertainty and the README will say so.
-
-## Layout
-
-- `anomaly_features.py`: loading the pipe-delimited captures, features (no label leakage), hold-out splits (tested)
-- `tests/`
-- `v2/run.py`: regenerates `v2/results.json` and the figures
-- README: "Version history" table, v1 tag vs v2
-
-## Data
-
-Not committed (3.4 GB). `scripts/fetch-data.sh` downloads the Kaggle archive and checks its size; the captures are expected in `$DATA_DIR` (default `~/Developer/data/anomaly-detection-v2`).
+No deep models, no live traffic, no claim about real networks. The malicious counts in the mostly-benign captures are tiny (6 to
+26), so Part B numbers are wide estimates and the README says so.
 
 ## Success criteria
 
-The README shows v1's number next to v2's held-out numbers with their uncertainty, a plain statement of what changed, and `python v2/run.py` reproduces every figure.
+The README states H1, the evidence for and against, and a conclusion that follows from the numbers (including the parts of H1 that
+do not survive). `python v2/run.py` reproduces every number and figure; the notebook checks itself against `v2/results.json`.
